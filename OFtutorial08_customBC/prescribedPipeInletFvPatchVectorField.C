@@ -157,7 +157,7 @@ void Foam::prescribedPipeInletFvPatchVectorField::updateCoeffs()
 
 	// assign inlet velocity normal to the patch
 	// by convention, patch faces point outside of the domain
-	vectorField Uin = (-1.)*(patch().Sf()/patch().magSf()) * flowSpeed_;
+	vectorField Uin((-1.)*(patch().Sf()/patch().magSf()) * flowSpeed_);
 
     // go over each face and add the BL profile for faces close to the wall
 	forAll(patch().Cf(), faceI)
