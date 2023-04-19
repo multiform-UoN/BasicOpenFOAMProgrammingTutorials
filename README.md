@@ -8,14 +8,15 @@ a brief summary of what each individual tutorial covers and how to use it.
 
 Current version of the tutorials is compatibile with the following OpenFOAM versions
 from the https://openfoam.org/ branch:
-- OpenFOAM 7 version 7
-- OpenFOAM 8
+- OpenFOAM 9
 
 The "OldReleases" folder contains versions of the tutorials compatibile with past
 OpenFOAM versions, namely:
 - OpenFOAM 3.0.1
 - OpenFOAM 5.x
 - OpenFOAM 6 version 6
+- OpenFOAM 7 version 7
+- OpenFOAM 8
 
 Complete backwards compatibility has been dropped, however,
 and hence the older tutorials will be lacking in content (they should still all
@@ -42,7 +43,8 @@ following people for offering their input:
 - Chris Coutinho (cbcoutinho) for spotting errors in README and parallel processing tutorial
 - Gerasimos Chourdakis (MakisH) for helping out with cleaning up the tutorial files
 - Germilly Barreto (Germilly) for suggesting a tutorial on command line argument parsing
-- Ramkumar (Ramkumar47) for contributing a new tutoral on waves and the SIMPLE algorithm (no. 13 and 14)
+- Ramkumar (Ramkumar47) for contributing a new tutoral on waves, the SIMPLE algorithm,
+    and particle tracking (no. 13, 14 and 16)
 
 ## How to use this resource
 
@@ -209,13 +211,13 @@ to visualise the initial conditions in the "beta" field and the solution to the
 transport equation saved as the "result" field.
 
 Recommended reading:
-- Wikipedia is always a good start:  
+- Wikipedia is always a good start:
     https://en.wikipedia.org/wiki/Convection%E2%80%93diffusion_equation
 - Very brief description of the physical and mathematical concepts behind
-	the scalar transport equation by CFD-online:  
+	the scalar transport equation by CFD-online:
     https://www.cfd-online.com/Wiki/Generic_scalar_transport_equation
 - Chapters 3, 4 and especially 5 in "Numerical Methods in Heat, Mass,
-    and Momentum Transfer" by Murthy, J. Y. 2002:  
+    and Momentum Transfer" by Murthy, J. Y. 2002:
     https://engineering.purdue.edu/~scalo/menu/teaching/me608/ME608_Notes_Murthy.pdf
 
 ![Alt text](OFtutorial10_transportEquation/testCase/2DconvectionDiffusion.png?raw=true "Tutorial 10 - result of 2D convection-diffusion with inlets at left and bottom edges")
@@ -252,7 +254,7 @@ a few people.
 
 Contributed by: Ramkumar
 
-This tutorial presents a basic solver that solves the wave equation. The main
+Presents a basic solver that solves the wave equation. The main
 motivation for this tutorial is to induce a very basic idea on how to solve custom
 equations using OpenFOAM C++. The tutorial "OFtutorial10\_transportEquation" gives
 an idea on solving a transport equation on an already solved velocity field. Hence
@@ -274,8 +276,8 @@ file "output.mp4" is the simulation output generated as an animation.
 
 Contributed by: Ramkumar
 
-This tutorial shows how the matrix operations are performed in order to solve
-the governing flow equations using the SIMPLE algorithm. 
+Shows how the matrix operations are performed in order to solve
+the governing flow equations using the SIMPLE algorithm.
 It is worth noting that the code is intended to show only how the equations are solved.
 Hence, the optimization and convergence check conditions are omitted to make the
 code simpler to understand.
@@ -294,4 +296,36 @@ tutorial:
 
 ![Alt text](OFtutorial14_SIMPLE_algorithm/testCase/velocity_field.png?raw=true "Tutorial 14 - channel flow velocity distribution")
 
+---------
+## Tutorial 15 - Discretisation schemes
 
+Illustrates how the fundamental concept of discretisation is handled inside OpenFOAM
+on the example of a convective flux used in the generic scalar transport equation.
+The derived scheme merges linear and upwind interpolation in order to demonstrate
+how custom behaviour may be implemented. Key place to pay attention to is the
+"weights" routine defined in "OFtutorial15.H".
+
+Test case used is a simple 1D flow with a dimensionless scalar field convecting
+a jump in the x-direction. Observe how the blended scheme is more accurate than
+pure upwind but avoids overshoot of the simple linear scheme.
+
+Recommended reading:
+- Excellent slides by WolfDynamics about theory of CFD as used in OpenFOAM:
+    http://www.wolfdynamics.com/training/OF_WS2020/traning_session2020.pdf
+
+![Alt text](OFtutorial15_discretisation/testCase/tutorial15.png?raw=true "Tutorial 15 - discretisation")
+![Alt text](OFtutorial15_discretisation/testCase/cellCentreValues.png?raw=true "Tutorial 15 - discretisation")
+
+---------
+## Tutorial 16 - Lagrangian Particle Tracking
+
+An custom application for tracking a massless particle through an existing flow field
+is developed. This tutorial introduces following concepts:
+
+* setting simulation time to read data at particular saved timestep.
+* datatypes *point* and *pointList*, which are nothing but vector datatypes dedicated to coordinates.
+* a mesh function to get the id of a cell within which a given point coordinates resides.
+* Lagrangian massless particle tracking.
+* writing VTK file for visualizing the particle's track.
+
+![Alt text](OFtutorial16_particleTracking/testCase/particlePath.png?raw=true "Tutorial 16 - particle tracking")
